@@ -58,25 +58,25 @@ Num : Num DIGIT           { $$ = $1 * 10 + $2; }
 %%
 
 int yylex(void) {
-	int chr;
+    int chr;
 
-	while((chr=getchar()) == ' ') {}	// discard whitespace
+    while((chr=getchar()) == ' ') {}    // discard whitespace
 
-	if(chr >= '0' && chr <= '9') {
-		yylval = chr - '0';
-		return(DIGIT);					// return DIGIT with yylval = 0..9
-	}
-	if(chr >= 'a' && chr <= 'z') {
-		yylval = chr;
-		return(LETTER);					// return LETTER with yylval = character
-	}
-	return(chr);						// return all other characters
+    if(chr >= '0' && chr <= '9') {
+        yylval = chr - '0';
+        return(DIGIT);                  // return DIGIT with yylval = 0..9
+    }
+    if(chr >= 'a' && chr <= 'z') {
+        yylval = chr;
+        return(LETTER);                 // return LETTER with yylval = character
+    }
+    return(chr);                        // return all other characters
 }
      
 void yyerror(char *text) {
-	printf("%s\n", text);
+    printf("%s\n", text);
 }
      
 int main(void) {
-	yyparse();
+    yyparse();
 }
