@@ -4,7 +4,7 @@
  *
  * expression evaluation using a stack and one accumulator (%rax)
  * syntax-directed translation: code is generated without a syntax tree
- * accepts infix expressions, implicitly converts to postfix notation, then:
+ * reads infix expressions, implicitly converts them to postfix notation, then:
  *
  * given a postfix expression, for each token:
  *     if token is operand:
@@ -37,7 +37,7 @@ void yyerror(char *s);
 %%
 
 List : List Stmt
-     | Stmt 
+     | Stmt
 ;
 Stmt : { printf("  .globl _expression\n_expression:\n"); }  Expr '\n'  { printf("  popq   %%rbx\n  ret\n"); }
      | '\n'               { YYACCEPT; }
@@ -60,17 +60,17 @@ Num : Num DIGIT           { $$ = $1 * 10 + $2; }
 int yylex(void) {
 	int chr;
 
-	while((chr=getchar()) == ' ') {}   // discard whitespace
+	while((chr=getchar()) == ' ') {}	// discard whitespace
 
 	if(chr >= '0' && chr <= '9') {
 		yylval = chr - '0';
-		return(DIGIT);                 // return DIGIT with yylval = 0..9
+		return(DIGIT);					// return DIGIT with yylval = 0..9
 	}
 	if(chr >= 'a' && chr <= 'z') {
 		yylval = chr;
-		return(LETTER);                // return LETTER with yylval = character
+		return(LETTER);					// return LETTER with yylval = character
 	}
-	return(chr);                       // return all other characters
+	return(chr);						// return all other characters
 }
      
 void yyerror(char *text) {
