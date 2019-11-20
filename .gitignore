@@ -52,5 +52,8 @@ Mkfile.old
 dkms.conf
 
 # Specific
-postfix64
-simple
+postfix64/postfix64
+examples/simple
+y.output
+y.tab.c
+y.tab.h
