@@ -10,9 +10,11 @@ Generates x86-64 assembly code for evaluating simple expressions.
 >> if token is operand:
 >>> push accumulator (%rax) onto stack
 >>> accumulator (%rax) <- token value
+>>>
 >> if token is operator:
 >>> operand2 (%rbx) <- accumulator (%rax)
 >>> operand1 (%rax) <- pop value from the stack
 >>> accumulator (%rax) <- result of operation with operand1 and operand2
+>>>
 >> if end of expression reached:
 >>> pop top of stack
