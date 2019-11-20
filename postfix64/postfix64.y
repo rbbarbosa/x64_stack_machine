@@ -15,7 +15,7 @@
  *         operand1 (%rax) <- pop value from the stack
  *         accumulator (%rax) <- result of operation with operand1 and operand2
  *     if end of expression reached:
- *         pop and discard top of stack
+ *         pop top of stack
  */
  
 %{
@@ -36,10 +36,10 @@ void yyerror(char *s);
 
 %%
 
-List : List Stmt
-     | Stmt
+List : List Stmt 
+     | Stmt 
 ;
-Stmt : { printf("  .globl _expression\n_expression:\n"); }  Expr '\n'  { printf("  popq   %%rbx\n  ret\n"); }
+Stmt : { printf("  .globl _expr\n_expr:\n  movq   %%rax,%%rbx\n"); }  Expr '\n'  { printf("  popq   %%rbx\n  ret\n"); }
      | '\n'               { YYACCEPT; }
 ;
 Expr : Expr '+' Expr      { printf("  movq   %%rax,%%rbx\n  popq   %%rax\n  addq   %%rbx,%%rax\n"); }

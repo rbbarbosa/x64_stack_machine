@@ -1,9 +1,9 @@
 #include <stdio.h>
 
-extern long expression();  // use external expression() in simple.s
+extern long expr();  // use external expr() in simple.s
 
 int main(void) {
-    long e = expression();
+    long e = expr();
     printf("%ld\n", e);
     return 0;
 }

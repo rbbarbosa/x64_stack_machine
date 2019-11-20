@@ -1,5 +1,6 @@
-  .globl _expression
-_expression:
+  .globl _expr
+_expr:
+  movq   %rax,%rbx
   push   %rax
   movq   $52,%rax
   push   %rax
