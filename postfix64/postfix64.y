@@ -79,4 +79,5 @@ void yyerror(char *text) {
      
 int main(void) {
     yyparse();
+    return 0;
 }
