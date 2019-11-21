@@ -1,10 +1,11 @@
-# x86-64 stack machine
+# tiny x86-64 stack machine
 
-Generates x86-64 assembly code for evaluating simple expressions.
+Generates x86-64 assembly code for evaluating simple expressions
 
 - Expression evaluation using a stack and one accumulator (%rax)
 - Syntax-directed translation: code is generated without a syntax tree
-- Reads infix expressions, implicitly converts them to postfix notation, then:
+
+Reads infix expressions, implicitly converts them to postfix notation, then:
 
 > given a postfix expression, for each token:
 >> if token is operand:

@@ -1,6 +1,6 @@
 /* Raul Barbosa <rbarbosa@dei.uc.pt>
  *
- * x86-64 stack machine
+ * tiny x86-64 stack machine
  *
  * expression evaluation using a stack and one accumulator (%rax)
  * syntax-directed translation: code is generated without a syntax tree
