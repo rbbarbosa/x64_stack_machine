@@ -1,13 +1,13 @@
 #include <stdio.h>
 
-#ifdef __APPLE__
-#define _expr() expr()
+#ifndef __APPLE__
+#define expr() _expr()
 #endif
 
-extern long _expr();  // use external _expr() in simple.s
+extern long expr();  // use external expr() in simple.s
 
 int main(void) {
-    long e = _expr();
+    long e = expr();
     printf("%ld\n", e);
     return 0;
 }
