@@ -24,6 +24,31 @@
 
 #define BITS 64
 
+#ifdef __APPLE__
+#define PREFIX "_"
+#else
+#define PREFIX ""
+#endif
+
+#define PROLOGUE     "  .globl " PREFIX "expr\n"                \
+                     PREFIX "expr:\n"                           \
+                     "  movq   %%rax,%%rbx\n"
+#define EPILOGUE     "  popq   %%rbx\n"                         \
+                     "  ret\n"
+#define PUSH_ACC     "  push   %%rax\n"
+#define LOAD_NUM     "  movq   $%d,%%rax\n"
+#define LOAD_MEM     "  movq   " PREFIX "%c+%d(%%rip),%%rax\n"
+#define POP_OPERANDS "  movq   %%rax,%%rbx\n"                   \
+                     "  popq   %%rax\n"
+#define ADD          "  addq   %%rbx,%%rax\n"
+#define SUB          "  subq   %%rbx,%%rax\n"
+#define MUL          "  imulq  %%rbx\n"
+#define DIV          "  cqto\n"                                 \
+                     "  idivq  %%rbx\n"
+#define MOD          "  cqto\n"                                 \
+                     "  idivq  %%rbx\n"                         \
+                     "  movq   %%rdx,%%rax\n"
+
 int yylex(void);
 void yyerror(char *s);
 
@@ -39,19 +64,19 @@ void yyerror(char *s);
 List : List Stmt 
      | Stmt 
 ;
-Stmt : { printf("  .globl _expr\n_expr:\n  movq   %%rax,%%rbx\n"); }  Expr '\n'  { printf("  popq   %%rbx\n  ret\n"); }
+Stmt : { printf(PROLOGUE); }  Expr '\n'  { printf(EPILOGUE); }
      | '\n'               { YYACCEPT; }
 ;
-Expr : Expr '+' Expr      { printf("  movq   %%rax,%%rbx\n  popq   %%rax\n  addq   %%rbx,%%rax\n"); }
-     | Expr '-' Expr      { printf("  movq   %%rax,%%rbx\n  popq   %%rax\n  subq   %%rbx,%%rax\n"); }
-     | Expr '*' Expr      { printf("  movq   %%rax,%%rbx\n  popq   %%rax\n  imulq  %%rbx\n"); }
-     | Expr '/' Expr      { printf("  movq   %%rax,%%rbx\n  popq   %%rax\n  cqto\n  idivq  %%rbx\n"); }
-     | Expr '%' Expr      { printf("  movq   %%rax,%%rbx\n  popq   %%rax\n  cqto\n  idivq  %%rbx\n  movq   %%rdx,%%rax\n"); }
+Expr : Expr '+' Expr       { printf(POP_OPERANDS ADD); }
+     | Expr '-' Expr       { printf(POP_OPERANDS SUB); }
+     | Expr '*' Expr       { printf(POP_OPERANDS MUL); }
+     | Expr '/' Expr       { printf(POP_OPERANDS DIV); }
+     | Expr '%' Expr       { printf(POP_OPERANDS MOD); }
      | '(' Expr ')'
-     | Num                { printf("  push   %%rax\n  movq   $%d,%%rax\n", $1); }
-     | LETTER '[' Num ']' { printf("  push   %%rax\n  movq   _%c+%d(%%rip),%%rax\n", $1, $3 * BITS/8); }
+     | Num                 { printf(PUSH_ACC LOAD_NUM, $1); }
+     | LETTER '[' Num ']'  { printf(PUSH_ACC LOAD_MEM, $1, $3 * BITS/8); }
 ;
-Num : Num DIGIT           { $$ = $1 * 10 + $2; }
+Num : Num DIGIT            { $$ = $1 * 10 + $2; }
     | DIGIT
 ;
 
