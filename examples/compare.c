@@ -2,14 +2,9 @@
 
 #define N 800
 
-#ifndef __APPLE__
-#define expr() _expr()
-#define a _a
-#endif
-
 long a[] = {1, 2, 3};
 
-extern long expr();     // use external expression() in expression.s
+extern long expr();     // use external expr() in compare.s
 long expr1() { return 1+(a[0]+(a[1]-a[2])*345-123*(a[2]%a[1]*a[0]+1)%a[1]+a[2]%(a[1]+123+a[0]/7))-a[1]+a[0]*a[1]/531%a[1]; }
 
 int main(void) {
