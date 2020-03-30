@@ -65,7 +65,7 @@ List : List Stmt
      | Stmt 
 ;
 Stmt : { printf(PROLOGUE); }  Expr '\n'  { printf(EPILOGUE); }
-     | '\n'               { YYACCEPT; }
+     | '\n'                { YYACCEPT; }
 ;
 Expr : Expr '+' Expr       { printf(POP_OPERANDS ADD); }
      | Expr '-' Expr       { printf(POP_OPERANDS SUB); }
