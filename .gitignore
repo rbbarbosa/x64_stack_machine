@@ -52,8 +52,9 @@ Mkfile.old
 dkms.conf
 
 # Specific
-postfix64/postfix64
+stackmachine
 examples/simple
+examples/compare
 y.output
 y.tab.c
 y.tab.h
